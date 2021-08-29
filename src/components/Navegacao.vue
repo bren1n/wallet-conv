@@ -8,7 +8,7 @@
           color="primary"
         >
           <v-list-item class="pa-2">
-            <v-img src="../assets/logo_fundo.png"></v-img>
+            <v-img src="../assets/logo_fundo.png" class="rounded-circle"></v-img>
           </v-list-item>
           <v-list
             nav
