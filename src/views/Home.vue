@@ -4,7 +4,7 @@
       <v-col></v-col>
       <v-col>
         <h2 class="text-center">Balanço</h2>
-        {{ this.receitaLiquida }}
+        {{ this.getReceitaLiquida }}
         <apexchart type="donut" width="380" :options="chartOptions" :series="series"></apexchart>
       </v-col>
       <v-col></v-col>
@@ -51,9 +51,9 @@ export default {
   },
   computed: {
     ...mapGetters([
-      "receitaLiquida",
-      "receitaBruta",
-      "gastosTotal"
+      "getReceitaLiquida",
+      "getReceitaBruta",
+      "getGastosTotal"
     ]),
     // series: [this.receitaLiquida, this.receitaBruta, this.gastosTotal]
   }

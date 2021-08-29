@@ -3,14 +3,14 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const store = new Vuex.Store({
+export default new Vuex.Store({
     state: {
         moeda: "",
         receita: [{quant: 1000}],
         gasto: [{quant: 100}]
     },
     getters: {
-        receitaLiquida: (state) => {
+        getReceitaLiquida: (state) => {
             let total;
             
             state.receita.forEach((rec) => total += rec.quant);
@@ -18,14 +18,14 @@ const store = new Vuex.Store({
 
             return total
         },
-        receitaBruta: (state) => {
+        getReceitaBruta: (state) => {
             let total;
             
             state.receita.forEach((rec) => total += rec.quant);
 
             return total
         },
-        gastosTotal: (state) => {
+        getGastosTotal: (state) => {
             let total;
 
             state.gasto.forEach((gas) => total -= gas.quant);
@@ -48,5 +48,3 @@ const store = new Vuex.Store({
         }
     }
 })
-
-export default store;
