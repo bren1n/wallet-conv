@@ -6,29 +6,29 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         moeda: "",
-        receita: [{quant: 1000}],
-        gasto: [{quant: 100}]
+        receitas: [{quant: 1000}],
+        gastos: [{quant: 100}]
     },
     getters: {
-        getReceitaLiquida: (state) => {
-            let total;
+        getSaldo: (state) => {
+            let total = 0;
             
-            state.receita.forEach((rec) => total += rec.quant);
-            state.gasto.forEach((gas) => total -= gas.quant);
+            state.receitas.forEach((rec) => total += rec.quant);
+            state.gastos.forEach((gas) => total -= gas.quant);
 
             return total
         },
-        getReceitaBruta: (state) => {
-            let total;
+        getReceitas: (state) => {
+            let total = 0;
             
-            state.receita.forEach((rec) => total += rec.quant);
+            state.receitas.forEach((rec) => total += rec.quant);
 
             return total
         },
-        getGastosTotal: (state) => {
-            let total;
+        getGastos: (state) => {
+            let total = 0;
 
-            state.gasto.forEach((gas) => total -= gas.quant);
+            state.gastos.forEach((gas) => total += gas.quant);
 
             return total
         }

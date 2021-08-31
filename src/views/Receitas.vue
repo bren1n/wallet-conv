@@ -1,5 +1,21 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <v-container>
+
+  </v-container>
 </template>
+
+<script>
+export default {
+  name: 'Receitas',
+  data: function() {
+    return {
+      
+    }
+  },
+  computed: {
+    
+  },
+  created() {
+  }
+}
+</script>

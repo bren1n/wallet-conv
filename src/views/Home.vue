@@ -1,61 +1,68 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col></v-col>
-      <v-col>
-        <h2 class="text-center">Balanço</h2>
-        {{ this.getReceitaLiquida }}
-        <apexchart type="donut" width="380" :options="chartOptions" :series="series"></apexchart>
+    <v-row justify="center">
+      <v-col cols="3">
+        <v-card
+          color="primary"
+        >
+          <v-card-title class="text-h5">
+            Saldo
+          </v-card-title>
+          <v-card-text>
+            <p class="text-h3">R${{ getSaldo.toFixed(2) }}</p>
+          </v-card-text>
+        </v-card>
       </v-col>
-      <v-col></v-col>
+      <v-col cols="3">
+        <v-card
+          color="success"
+        >
+          <v-card-title class="text-h6">
+            Receitas
+          </v-card-title>
+          <v-card-text>
+            <p class="text-h4">R${{ getReceitas.toFixed(2) }}</p>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="3">
+        <v-card
+          color="error"
+        >
+          <v-card-title class="text-h6">
+            Gastos
+          </v-card-title>
+          <v-card-text>
+            <p class="text-h4">R${{ getGastos.toFixed(2) }}</p>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      
+      
     </v-row>
   </v-container>
 </template>
 
 <script>
-import VueApexCharts from 'vue-apexcharts'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'Home',
-  components: {
-    apexchart: VueApexCharts
-  },
   data: function() {
     return {
-      series: [44, 55, 13],
-      chartOptions: {
-        chart: {
-          width: 380,
-          type: 'donut',
-        },
-        dataLabels: {
-          enabled: false
-        },
-        responsive: [{
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              show: false
-            }
-          }
-        }],
-        legend: {
-          show: false,
-        }
-      },
+      
     }
   },
   computed: {
     ...mapGetters([
-      "getReceitaLiquida",
-      "getReceitaBruta",
-      "getGastosTotal"
+      "getReceitas",
+      "getSaldo",
+      "getGastos"
     ]),
-    // series: [this.receitaLiquida, this.receitaBruta, this.gastosTotal]
+  },
+  created() {
   }
 }
 </script>

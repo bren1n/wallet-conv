@@ -14,6 +14,7 @@ export default new Vuetify({
                 primary: colors.indigo.base,
                 secondary: colors.blue.accent1,
                 accent: colors.shades.black,
+                success: colors.lightGreen.accent4,
                 error: colors.red.darken4,
             },
         },
