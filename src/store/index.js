@@ -75,16 +75,31 @@ export default new Vuex.Store({
             }
             return gastosValues;
         },
+        getReceitasValues: (state) => {
+            let receitasValues = [];
+            for (let i = 0; i < state.categReceitas.length; i++) {
+                let total = 0;
+                for (let j = 0; j < state.receitas.length; j++) {
+                    if (state.receitas[j].categ === state.categReceitas[i].id)
+                        total++;
+                }
+                receitasValues.push(total);
+            }
+            return receitasValues;
+        },
         getGastosList: (state) => {
             return state.gastos;
+        },
+        getReceitasList: (state) => {
+            return state.receitas;
         }
     },
     mutations: {
         addReceita(state, rec) {
             state.receitas.push(rec);
         },
-        editReceita(state, index, rec) {
-            state.receitas[index] = rec;
+        editReceita(state, obj) {
+            state.receitas[obj.index] = obj.rec;
         },
         addGasto(state, gas) {
             state.gastos.push(gas);
@@ -94,6 +109,9 @@ export default new Vuex.Store({
         },
         deleteGasto(state, index) {
             state.gastos.splice(index, 1);
+        },
+        deleteReceita(state, index) {
+            state.receitas.splice(index, 1);
         }
     }
 })

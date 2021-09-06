@@ -72,19 +72,19 @@ export default {
         colors: ['#FF5722', '#d1d134', '#263238', '#4CAF50', '#01579B'],
         labels: ['Alimentação', 'Pagamentos', 'Roupas', 'Transporte', 'Outros'],
         plotOptions: {
-    pie: {
-      donut: {
-        labels: {
-          show: true,
-          total: {
-            show: true,
-            color: '#ffffff',
-            showAlways: true
+          pie: {
+            donut: {
+              labels: {
+                show: true,
+                total: {
+                  show: true,
+                  color: '#ffffff',
+                  showAlways: true
+                }
+              }
+            }
           }
         }
-      }
-    }
-  }
       },
     }
   },
