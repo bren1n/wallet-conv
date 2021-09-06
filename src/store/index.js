@@ -7,7 +7,38 @@ export default new Vuex.Store({
     state: {
         moeda: "",
         receitas: [{quant: 1000}],
-        gastos: [{quant: 100}]
+        gastos: [
+            {
+              id: 1,
+              descricao: 'Gasto 1',
+              tipo: 'Tipo 1',
+              quantidade: 100.0,
+            },
+            {
+              id: 2,
+              descricao: 'Gasto 2',
+              tipo: 'Tipo 2',
+              quantidade: 100.0,
+            },
+            {
+              id: 3,
+              descricao: 'Gasto 3',
+              tipo: 'Tipo 3',
+              quantidade: 100.0,
+            },
+            {
+              id: 4,
+              descricao: 'Gasto 4',
+              tipo: 'Tipo 4',
+              quantidade: 100.0,
+            },
+            {
+              id: 5,
+              descricao: 'Gasto 5',
+              tipo: 'Tipo 5',
+              quantidade: 100.0,
+            }
+          ]
     },
     getters: {
         getSaldo: (state) => {
@@ -45,6 +76,9 @@ export default new Vuex.Store({
         },
         editGasto(state, index, gas) {
             state.gasto[index] = gas;
+        },
+        deleteGasto(state, index) {
+            state.gastos.splice(index, 1);
         }
     }
 })
