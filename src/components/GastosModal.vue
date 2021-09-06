@@ -22,11 +22,11 @@
           dark
           v-bind="attrs"
           v-on="on"
-          fab
+          icon
           small
           v-if="edit"
         >
-          <v-icon color="black">mdi-pencil</v-icon>
+          <v-icon color="white">mdi-pencil</v-icon>
         </v-btn>
       </template>
       <v-card>
@@ -129,13 +129,13 @@
             ...mapGetters([
                 "getCategGastos",
                 "getCategGastosById",
-                "getGastoByIndex"
+                "getGastosByIndex"
             ]),
         },
 
         created() {
           if (this.edit) {
-            this.gasto = this.getGastoByIndex(this.gastoIndex);
+            this.gasto = this.getGastosByIndex(this.gastoIndex);
           }
         },
 
@@ -151,7 +151,8 @@
               this.gasto = {quant: 0, categ: 1, desc: ""};
               this.dialog = false;
             } else if(this.edit) {
-              this.addGasto(this.gastoIndex, this.gasto);
+              this.editGasto({'index': this.gastoIndex, 'gas': this.gasto});
+              this.$emit('updateChart')
               this.gasto = {quant: 0, categ: 1, desc: ""};
               this.dialog = false;
             } else {

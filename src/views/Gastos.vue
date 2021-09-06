@@ -20,12 +20,15 @@
         :headers="headers"
         :items="gastos"
         :items-per-page="5">
-          <template v-slot:[`item.quantidade`]="{ item }">
-            <span>R${{ item.quantidade.toFixed(2) }}</span>
+          <template v-slot:[`item.categ`]="{ item }">
+            <span :style="{'color': getCategGastosById(item.categ).cor}">{{ getCategGastosById(item.categ).nome }}</span>
+          </template>
+          <template v-slot:[`item.quant`]="{ item }">
+            <span>R${{ item.quant.toFixed(2) }}</span>
           </template>
           <template v-slot:[`item.acoes`]="{ item }">
+            <gastos-modal edit :gastoIndex="gastos.indexOf(item)" @updateChart="updateChart"/>
             <v-icon @click="deleteGasto(gastos.indexOf(item))">mdi-delete</v-icon>
-            <!-- {{ items.indexOf(item) }} -->
           </template>
         </v-data-table>
       </v-col>
@@ -33,7 +36,7 @@
       <v-col>
         <template>
           <div>
-            <apexchart width="385" type="donut" :options="options" :series="series"></apexchart>
+            <apexchart ref="chart" width="385" type="donut" :options="options" :series="series"></apexchart>
           </div>
         </template>
       </v-col>
@@ -44,35 +47,45 @@
 <script>
 import VueApexCharts from 'vue-apexcharts'
 import { mapGetters, mapMutations } from 'vuex'
+import GastosModal from '@/components/GastosModal.vue'
 
 export default {
   name: 'Gastos',
   components: {
-    apexchart: VueApexCharts
+    apexchart: VueApexCharts,
+    GastosModal
   },
   data: function() {
     return {
       headers: [
-        {text: 'Descrição', value: 'descricao', sortable: true},
-        {text: 'Tipo', value: 'tipo', sortable: false},
-        {text: 'Quatidade', value: 'quantidade', sortable: true},
+        {text: 'Descrição', value: 'desc', sortable: true},
+        {text: 'Categoria', value: 'categ', sortable: false},
+        {text: 'Quatidade', value: 'quant', sortable: true},
         {text: 'Ações', value: 'acoes', sortable: false},
       ],
-      gastos: this.$store.state.gastos,
-      series: [60, 55, 41, 17, 15],
+      gastos: [],
+      series: [],
       options: {
         legend: {
           show: false
         },
-        theme: {
-          monochrome: {
-            enabled: true,
-            color: '#3F51B5',
-            shadeTo: 'light',
-            shadeIntensity: 0.65
+        colors: ['#FF5722', '#d1d134', '#263238', '#4CAF50', '#01579B'],
+        labels: ['Alimentação', 'Pagamentos', 'Roupas', 'Transporte', 'Outros'],
+        plotOptions: {
+    pie: {
+      donut: {
+        labels: {
+          show: true,
+          total: {
+            show: true,
+            color: '#ffffff',
+            showAlways: true
           }
         }
       }
+    }
+  }
+      },
     }
   },
   methods: {
@@ -80,17 +93,24 @@ export default {
       'deleteGasto'
     ]),
     deleteGasto(index) {
-      return this.$store.commit('deleteGasto', index);
+      this.$store.commit('deleteGasto', index);
+      this.updateChart()
+    },
+    updateChart() {
+      this.$refs.chart.updateSeries(this.getGastosValues)
     }
   },
   computed: {
     ...mapGetters([
-      "getReceitas",
-      "getSaldo",
-      "getGastos"
+      "getGastos",
+      "getGastosList",
+      "getCategGastosById",
+      "getGastosValues"
     ]),
   },
   created() {
+    this.gastos = this.getGastosList
+    this.series = this.getGastosValues
   }
 }
 </script>

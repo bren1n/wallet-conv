@@ -16,7 +16,7 @@ export default new Vuex.Store({
         ],
         categGastos: [
             {id: 1, nome: "Alimentação", cor: "#FF5722"},
-            {id: 2, nome: "Pagamentos", cor: "#FFFF00"},
+            {id: 2, nome: "Pagamentos", cor: "#d1d134"},
             {id: 3, nome: "Roupas", cor: "#263238"},
             {id: 4, nome: "Transporte", cor: "#4CAF50"},
             {id: 5, nome: "Outros", cor: "#01579B"}
@@ -62,6 +62,21 @@ export default new Vuex.Store({
         },
         getCategGastosById: (state) => (id) => {
             return state.categGastos.find((categ) => categ.id === id)
+        },
+        getGastosValues: (state) => {
+            let gastosValues = [];
+            for (let i = 0; i < state.categGastos.length; i++) {
+                let total = 0;
+                for (let j = 0; j < state.gastos.length; j++) {
+                    if (state.gastos[j].categ === state.categGastos[i].id)
+                        total++;
+                }
+                gastosValues.push(total);
+            }
+            return gastosValues;
+        },
+        getGastosList: (state) => {
+            return state.gastos;
         }
     },
     mutations: {
@@ -74,8 +89,8 @@ export default new Vuex.Store({
         addGasto(state, gas) {
             state.gastos.push(gas);
         },
-        editGasto(state, index, gas) {
-            state.gasto[index] = gas;
+        editGasto(state, obj) {
+            state.gastos[obj.index] = obj.gas;
         },
         deleteGasto(state, index) {
             state.gastos.splice(index, 1);
