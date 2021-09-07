@@ -2,14 +2,7 @@
   <v-container>
     <v-row justify="center">
       <v-col cols="3">
-        <v-card color="primary">
-          <v-card-title class="text-h6">
-            Receitas
-          </v-card-title>
-          <v-card-text>
-            <p class="text-h4">R${{ getReceitas.toFixed(2) }}</p>
-          </v-card-text>
-        </v-card>
+        <receitas-card @updateChart="updateChart"/>
       </v-col>
     </v-row>
     <br><br>
@@ -27,7 +20,7 @@
           </template>
           <template v-slot:[`item.acoes`]="{ item }">
             <receitas-modal edit :receitaIndex="receitas.indexOf(item)" @updateChart="updateChart"/>
-            <v-icon @click="deleteReceita(receitas.indexOf(item))">mdi-delete</v-icon>
+            <v-icon @click="deleteReceita(receitas.indexOf(item))" color="error">mdi-delete</v-icon>
           </template>
         </v-data-table>
       </v-col>
@@ -47,12 +40,14 @@
 import VueApexCharts from 'vue-apexcharts'
 import { mapGetters, mapMutations } from 'vuex'
 import ReceitasModal from '@/components/ReceitasModal.vue'
+import ReceitasCard from '../components/ReceitasCard.vue'
 
 export default {
   name: 'Receitas',
   components: {
     apexchart: VueApexCharts,
-    ReceitasModal
+    ReceitasModal,
+    ReceitasCard
   },
   data: function() {
     return {
@@ -78,7 +73,14 @@ export default {
                 total: {
                   show: true,
                   color: '#ffffff',
-                  showAlways: true
+                  showAlways: true,
+                  formatter: function (w) {
+                    let total = 0;
+                    w.globals.seriesTotals.forEach(element => {
+                      total += element;
+                    });
+                    return "R$ " + total.toFixed(2)
+                  },
                 }
               }
             }
@@ -89,10 +91,10 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'deleteReceita'
+      'deletarReceita'
     ]),
     deleteReceita(index) {
-      this.$store.commit('deleteReceita', index);
+      this.deletarReceita(index);
       this.updateChart()
     },
     updateChart() {

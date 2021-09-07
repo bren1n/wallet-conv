@@ -11,6 +11,7 @@
           v-bind="attrs"
           v-on="on"
           v-if="add"
+          @click="setAddGasto()"
           fab
           outlined
           small
@@ -22,6 +23,7 @@
           dark
           v-bind="attrs"
           v-on="on"
+          @click="setEditGasto()"
           icon
           small
           v-if="edit"
@@ -47,6 +49,7 @@
                     hide-details 
                     prefix="R$" 
                     color="error"
+                    autofocus
                     >
                     </v-text-field>
                 </v-col>
@@ -129,14 +132,8 @@
             ...mapGetters([
                 "getCategGastos",
                 "getCategGastosById",
-                "getGastosByIndex"
+                "getGastoByIndex"
             ]),
-        },
-
-        created() {
-          if (this.edit) {
-            this.gasto = this.getGastosByIndex(this.gastoIndex);
-          }
         },
 
         methods: {
@@ -148,17 +145,18 @@
           callMutation() {
             if (this.add) {
               this.addGasto(this.gasto);
-              this.gasto = {quant: 0, categ: 1, desc: ""};
-              this.dialog = false;
             } else if(this.edit) {
               this.editGasto({'index': this.gastoIndex, 'gas': this.gasto});
-              this.$emit('updateChart')
-              this.gasto = {quant: 0, categ: 1, desc: ""};
-              this.dialog = false;
-            } else {
-              this.gasto = {quant: 0, categ: 1, desc: ""};
-              this.dialog = false;
             }
+            this.dialog = false;
+            this.$emit('updateChart')
+          },
+          setEditGasto() {
+            let gas_obj = this.getGastoByIndex(this.gastoIndex);
+            this.gasto = {quant: gas_obj.quant, categ: gas_obj.categ, desc: gas_obj.desc};
+          },
+          setAddGasto() {
+            this.gasto = {quant: 0, categ: 1, desc: ""};
           }
         }
     }

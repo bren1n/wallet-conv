@@ -14,28 +14,10 @@
         </v-card>
       </v-col>
       <v-col cols="3">
-        <v-card
-          color="success"
-        >
-          <v-card-title class="text-h6">
-            Receitas
-          </v-card-title>
-          <v-card-text>
-            <p class="text-h4">R${{ getReceitas.toFixed(2) }} <receitas-modal add /> </p>
-          </v-card-text>
-        </v-card>
+        <receitas-card />
       </v-col>
       <v-col cols="3">
-        <v-card
-          color="error"
-        >
-          <v-card-title class="text-h6">
-            Gastos
-          </v-card-title>
-          <v-card-text>
-            <p class="text-h4">R${{ getGastos.toFixed(2) }} <gastos-modal add /></p>
-          </v-card-text>
-        </v-card>
+        <gastos-card />
       </v-col>
     </v-row>
   </v-container>
@@ -43,28 +25,19 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ReceitasModal from '@/components/ReceitasModal.vue'
-import GastosModal from '@/components/GastosModal.vue'
+import ReceitasCard from '../components/ReceitasCard.vue'
+import GastosCard from '../components/GastosCard.vue'
 
 export default {
   name: 'Home',
   components: {
-    ReceitasModal,
-    GastosModal
-  },
-  data: function() {
-    return {
-      
-    }
+    ReceitasCard,
+    GastosCard
   },
   computed: {
     ...mapGetters([
-      "getReceitas",
-      "getSaldo",
-      "getGastos"
+      "getSaldo"
     ]),
-  },
-  created() {
   }
 }
 </script>

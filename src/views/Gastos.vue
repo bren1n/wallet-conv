@@ -2,20 +2,12 @@
   <v-container>
     <v-row justify="center">
       <v-col cols="3">
-        <v-card color="primary">
-          <v-card-title class="text-h6">
-            Gastos
-          </v-card-title>
-          <v-card-text>
-            <p class="text-h4">R${{ getGastos.toFixed(2) }}</p>
-          </v-card-text>
-        </v-card>
+        <gastos-card @updateChart="updateChart"/>
       </v-col>
     </v-row>
     <br><br>
     <v-row justify="center">
       <v-col cols="7">
-        <!-- <h3>Lista de gastos</h3><br> -->
         <v-data-table
         :headers="headers"
         :items="gastos"
@@ -28,7 +20,7 @@
           </template>
           <template v-slot:[`item.acoes`]="{ item }">
             <gastos-modal edit :gastoIndex="gastos.indexOf(item)" @updateChart="updateChart"/>
-            <v-icon @click="deleteGasto(gastos.indexOf(item))">mdi-delete</v-icon>
+            <v-icon @click="deleteGasto(gastos.indexOf(item))" color="error">mdi-delete</v-icon>
           </template>
         </v-data-table>
       </v-col>
@@ -48,12 +40,14 @@
 import VueApexCharts from 'vue-apexcharts'
 import { mapGetters, mapMutations } from 'vuex'
 import GastosModal from '@/components/GastosModal.vue'
+import GastosCard from '../components/GastosCard.vue'
 
 export default {
   name: 'Gastos',
   components: {
     apexchart: VueApexCharts,
-    GastosModal
+    GastosModal,
+    GastosCard
   },
   data: function() {
     return {
@@ -79,7 +73,14 @@ export default {
                 total: {
                   show: true,
                   color: '#ffffff',
-                  showAlways: true
+                  showAlways: true,
+                  formatter: function (w) {
+                    let total = 0;
+                    w.globals.seriesTotals.forEach(element => {
+                      total += element;
+                    });
+                    return "R$ " + total.toFixed(2)
+                  },
                 }
               }
             }
@@ -90,10 +91,10 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'deleteGasto'
+      'deletarGasto'
     ]),
     deleteGasto(index) {
-      this.$store.commit('deleteGasto', index);
+      this.deletarGasto(index);
       this.updateChart()
     },
     updateChart() {

@@ -54,7 +54,7 @@ export default new Vuex.Store({
         getCategGastos: (state) => {
             return state.categGastos
         },
-        getGastosByIndex: (state) => (index) => {
+        getGastoByIndex: (state) => (index) => {
             return state.gastos[index]
         },
         getCategReceitasById: (state) => (id) => {
@@ -69,7 +69,7 @@ export default new Vuex.Store({
                 let total = 0;
                 for (let j = 0; j < state.gastos.length; j++) {
                     if (state.gastos[j].categ === state.categGastos[i].id)
-                        total++;
+                        total += state.gastos[j].quant;
                 }
                 gastosValues.push(total);
             }
@@ -81,7 +81,7 @@ export default new Vuex.Store({
                 let total = 0;
                 for (let j = 0; j < state.receitas.length; j++) {
                     if (state.receitas[j].categ === state.categReceitas[i].id)
-                        total++;
+                        total += state.receitas[j].quant;
                 }
                 receitasValues.push(total);
             }
@@ -99,18 +99,18 @@ export default new Vuex.Store({
             state.receitas.push(rec);
         },
         editReceita(state, obj) {
-            state.receitas[obj.index] = obj.rec;
+            state.receitas.splice(obj.index, 1, obj.rec)
         },
         addGasto(state, gas) {
             state.gastos.push(gas);
         },
         editGasto(state, obj) {
-            state.gastos[obj.index] = obj.gas;
+            state.gastos.splice(obj.index, 1, obj.gas);
         },
-        deleteGasto(state, index) {
+        deletarGasto(state, index) {
             state.gastos.splice(index, 1);
         },
-        deleteReceita(state, index) {
+        deletarReceita(state, index) {
             state.receitas.splice(index, 1);
         }
     }

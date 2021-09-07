@@ -11,6 +11,7 @@
           v-bind="attrs"
           v-on="on"
           v-if="add"
+          @click="setAddReceita()"
           fab
           outlined
           small
@@ -22,6 +23,7 @@
           dark
           v-bind="attrs"
           v-on="on"
+          @click="setEditReceita()"
           icon
           small
           v-if="edit"
@@ -47,6 +49,7 @@
                     hide-details 
                     prefix="R$" 
                     color="success"
+                    autofocus
                     >
                     </v-text-field>
                 </v-col>
@@ -133,12 +136,6 @@
             ]),
         },
 
-        created() {
-          if (this.edit) {
-            this.receita = this.getReceitaByIndex(this.receitaIndex);
-          }
-        },
-
         methods: {
           ...mapMutations([
             "addReceita",
@@ -148,17 +145,18 @@
           callMutation() {
             if (this.add) {
               this.addReceita(this.receita);
-              this.receita = {quant: 0, categ: 1, desc: ""};
-              this.dialog = false;
             } else if(this.edit) {
               this.editReceita({'index': this.receitaIndex, 'rec': this.receita});
-              this.$emit('updateChart')
-              this.receita = {quant: 0, categ: 1, desc: ""};
-              this.dialog = false;
-            } else {
-              this.receita = {quant: 0, categ: 1, desc: ""};
-              this.dialog = false;
             }
+            this.dialog = false;
+            this.$emit('updateChart');
+          },
+          setEditReceita() {
+            let receita_obj = this.getReceitaByIndex(this.receitaIndex);
+            this.receita = {quant: receita_obj.quant, categ: receita_obj.categ, desc: receita_obj.desc};
+          },
+          setAddReceita() {
+            this.receita = {quant: 0, categ: 1, desc: ""};
           }
         }
     }
