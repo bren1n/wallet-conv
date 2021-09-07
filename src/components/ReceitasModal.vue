@@ -22,11 +22,11 @@
           dark
           v-bind="attrs"
           v-on="on"
-          fab
+          icon
           small
           v-if="edit"
         >
-          <v-icon color="black">mdi-pencil</v-icon>
+          <v-icon color="white">mdi-pencil</v-icon>
         </v-btn>
       </template>
       <v-card>
@@ -151,7 +151,8 @@
               this.receita = {quant: 0, categ: 1, desc: ""};
               this.dialog = false;
             } else if(this.edit) {
-              this.addReceita(this.receitaIndex, this.receita);
+              this.editReceita({'index': this.receitaIndex, 'rec': this.receita});
+              this.$emit('updateChart')
               this.receita = {quant: 0, categ: 1, desc: ""};
               this.dialog = false;
             } else {
