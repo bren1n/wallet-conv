@@ -38,6 +38,11 @@ export default {
     ...mapGetters([
       "getSaldo"
     ]),
+  },
+  created() {
+    this.axios.get("latest").then((response) => {
+      console.log(response);
+    })
   }
 }
 </script>
