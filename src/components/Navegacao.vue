@@ -32,57 +32,69 @@
                 </v-list-item-icon>
                 <v-list-item-title>Receitas</v-list-item-title>
             </v-list-item>
-            <!-- <template v-slot:append> -->
-              <v-list-item class="mt-5">
-                <v-list-item-icon>
-                  <v-icon>mdi-cash-multiple</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title>
-                  <p>Moeda</p>
-                  <p>
-                    <v-btn small icon class="ma-1">
-                      <v-img src="../assets/br.png" max-height="20" max-width="30"></v-img>
-                    </v-btn>
-                    <v-btn small icon class="ma-1">
-                      <v-img src="../assets/eua.png" max-height="20" max-width="30"></v-img>
-                    </v-btn>
-                    <v-btn small icon class="ma-1">
-                      <v-img src="../assets/gbr.png" max-height="20" max-width="30"></v-img>
-                    </v-btn>
-                    <v-btn small icon class="ma-1">
-                      <v-img src="../assets/ue.png" max-height="20" max-width="30"></v-img>
-                    </v-btn>
-                  </p>
-                </v-list-item-title>
-              </v-list-item>
-            <!-- </template> -->
+            <v-list-item class="mt-7">
+              <v-list-item-icon>
+                <v-icon>mdi-cash-multiple</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>
+                Moeda Usada:
+                <p>
+                  <v-btn 
+                  fab 
+                  small 
+                  color="secondary" 
+                  v-for="(moeda, index) in moedas" 
+                  :key="index" 
+                  :text="moeda.sigla == getMoeda.sigla ? false : true"
+                  :class="{'disable-events': moeda.sigla == getMoeda.sigla ? true : false}"
+                  @click="changeCurrency(moeda)"
+                  >
+                    <v-img :src="require(`../assets/${moeda.sigla}.png`)" max-height="20" max-width="30"></v-img>
+                  </v-btn>
+                </p>
+              </v-list-item-title>
+            </v-list-item>
           </v-list>
-          <!-- <template v-slot:append>
-            <div class="pa-2">
-              <v-select
-                :items="moedas"
-                label="Outlined style"
-                item-text="nome"
-                outlined
-                min-width="100"
-              ></v-select>
-            </div>
-          </template> -->
         </v-navigation-drawer>
       </v-card>
 </template>
 
 <script>
+  import { mapGetters, mapMutations } from 'vuex'
+
   export default {
     name: 'Navegacao',
 
     data: () => ({
       moedas: [
-        {nome: "Real", sigla: "BRL"},
-        {nome: "Dólar", sigla: "USD"},
-        {nome: "Euro", sigla: "EUR"},
-        {nome: "Libra", sigla: "GBP"},
+        {nome: "Real", sigla: "BRL", icone: "currency-brl"},
+        {nome: "Dólar", sigla: "USD", icone: "currency-usd"},
+        {nome: "Euro", sigla: "EUR", icone: "currency-eur"},
+        {nome: "Libra", sigla: "GBP", icone: "currency-gbp"},
       ]
     }),
+
+    computed: {
+      ...mapGetters([
+        "getMoeda"
+      ]),
+    },
+
+    methods: {
+      ...mapMutations([
+        "changeMoeda"
+      ]),
+      changeCurrency(moeda) {
+        this.axios.get(`latest/${this.getMoeda.sigla}`).then((response) => {
+          this.changeMoeda({taxa: response.data.conversion_rates[moeda.sigla], nova_moeda: moeda})
+        })
+      }
+    }
   }
 </script>
+
+<style>
+.disable-events {
+  pointer-events: none
+}
+</style>

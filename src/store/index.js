@@ -1,11 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+Number.prototype.toFixedNumber = function(digits, base){
+    var pow = Math.pow(base||10, digits);
+    return Math.round(this*pow) / pow;
+}
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        moeda: "",
+        moeda: {nome: "Real", sigla: "BRL", icone:"currency-brl"},
         receitas: [],
         gastos: [],
         categReceitas: [
@@ -92,6 +97,9 @@ export default new Vuex.Store({
         },
         getReceitasList: (state) => {
             return state.receitas;
+        },
+        getMoeda: (state) => {
+            return state.moeda;
         }
     },
     mutations: {
@@ -112,6 +120,17 @@ export default new Vuex.Store({
         },
         deletarReceita(state, index) {
             state.receitas.splice(index, 1);
-        }
+        },
+        changeMoeda(state, obj) {
+            state.moeda = obj.nova_moeda;
+
+            state.gastos.forEach((gas) => {
+                gas.quant = (gas.quant * obj.taxa).toFixedNumber(2);
+            })
+
+            state.receitas.forEach((rec) => {
+                rec.quant = (rec.quant * obj.taxa).toFixedNumber(2);
+            })
+        },
     }
 })

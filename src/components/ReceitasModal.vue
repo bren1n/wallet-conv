@@ -46,11 +46,13 @@
                     v-model.number="receita.quant" 
                     label="Quantidade" 
                     outlined 
-                    hide-details 
-                    prefix="R$" 
+                    hide-details
                     color="success"
                     autofocus
                     >
+                      <template v-slot:prepend-inner>
+                        <v-icon small>mdi-{{ getMoeda.icone }}</v-icon>
+                      </template>
                     </v-text-field>
                 </v-col>
                 <v-col cols="5">
@@ -132,7 +134,8 @@
             ...mapGetters([
                 "getCategReceitas",
                 "getCategReceitasById",
-                "getReceitaByIndex"
+                "getReceitaByIndex",
+                "getMoeda"
             ]),
         },
 

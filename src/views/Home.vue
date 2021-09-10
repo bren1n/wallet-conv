@@ -9,7 +9,7 @@
             Saldo
           </v-card-title>
           <v-card-text>
-            <p class="text-h3">R${{ getSaldo.toFixed(2) }}</p>
+            <p class="text-h3"><v-icon large>mdi-{{ getMoeda.icone }}</v-icon>{{ getSaldo.toFixed(2) }}</p>
           </v-card-text>
         </v-card>
       </v-col>
@@ -36,13 +36,9 @@ export default {
   },
   computed: {
     ...mapGetters([
-      "getSaldo"
+      "getSaldo",
+      "getMoeda"
     ]),
-  },
-  created() {
-    this.axios.get("latest").then((response) => {
-      console.log(response);
-    })
   }
 }
 </script>

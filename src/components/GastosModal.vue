@@ -47,10 +47,12 @@
                     label="Quantidade" 
                     outlined 
                     hide-details 
-                    prefix="R$" 
                     color="error"
                     autofocus
                     >
+                      <template v-slot:prepend-inner>
+                        <v-icon small>mdi-{{ getMoeda.icone }}</v-icon>
+                      </template>
                     </v-text-field>
                 </v-col>
                 <v-col cols="5">
@@ -132,7 +134,8 @@
             ...mapGetters([
                 "getCategGastos",
                 "getCategGastosById",
-                "getGastoByIndex"
+                "getGastoByIndex",
+                "getMoeda"
             ]),
         },
 

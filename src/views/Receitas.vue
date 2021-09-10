@@ -16,7 +16,7 @@
             <span :style="{'color': getCategReceitasById(item.categ).cor}">{{ getCategReceitasById(item.categ).nome }}</span>
           </template>
           <template v-slot:[`item.quant`]="{ item }">
-            <span>R${{ item.quant.toFixed(2) }}</span>
+            <span><v-icon small>mdi-{{ getMoeda.icone }}</v-icon>{{ item.quant.toFixed(2) }}</span>
           </template>
           <template v-slot:[`item.acoes`]="{ item }">
             <receitas-modal edit :receitaIndex="receitas.indexOf(item)" @updateChart="updateChart"/>
@@ -79,7 +79,7 @@ export default {
                     w.globals.seriesTotals.forEach(element => {
                       total += element;
                     });
-                    return "R$ " + total.toFixed(2)
+                    return total.toFixed(2)
                   },
                 }
               }
@@ -106,7 +106,8 @@ export default {
       "getReceitas",
       "getReceitasList",
       "getCategReceitasById",
-      "getReceitasValues"
+      "getReceitasValues",
+      "getMoeda"
     ]),
   },
   created() {

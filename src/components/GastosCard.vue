@@ -6,7 +6,7 @@
         Gastos
         </v-card-title>
         <v-card-text>
-        <p class="text-h4">R${{ getGastos.toFixed(2) }} <gastos-modal add @updateChart="$emit('updateChart')" /></p>
+        <p class="text-h4"><v-icon large>mdi-{{ getMoeda.icone }}</v-icon>{{ getGastos.toFixed(2) }} <gastos-modal add @updateChart="$emit('updateChart')" /></p>
         </v-card-text>
     </v-card>
 </template>
@@ -22,7 +22,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      "getGastos"
+      "getGastos",
+      "getMoeda"
     ]),
   },
 }

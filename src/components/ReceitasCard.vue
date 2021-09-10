@@ -6,7 +6,7 @@
         Receitas
         </v-card-title>
         <v-card-text>
-        <p class="text-h4">R${{ getReceitas.toFixed(2) }} <receitas-modal add @updateChart="$emit('updateChart')"/> </p>
+        <p class="text-h4"><v-icon large>mdi-{{ getMoeda.icone }}</v-icon>{{ getReceitas.toFixed(2) }} <receitas-modal add @updateChart="$emit('updateChart')"/> </p>
         </v-card-text>
     </v-card>
 </template>
@@ -22,7 +22,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      "getReceitas"
+      "getReceitas",
+      "getMoeda"
     ]),
   },
 }
